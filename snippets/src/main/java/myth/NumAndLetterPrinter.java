@@ -13,9 +13,7 @@ public class NumAndLetterPrinter {
         synchronized (lock) {
             for (int i = 0; i < 26; i++) {
                 if (Thread.currentThread().getName() == "numThread") {
-                    //打印数字1-26
                     System.out.print((i + 1));
-                    // 唤醒其他在等待的线程
                     lock.notifyAll();
                     try {
                         // 让当前线程释放锁资源，进入wait状态
