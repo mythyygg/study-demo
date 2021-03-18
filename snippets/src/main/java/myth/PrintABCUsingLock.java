@@ -30,11 +30,11 @@ public class PrintABCUsingLock {
         new Thread(() -> {
             loopThread.printLetter("B", 1);
         }, "B").start();
-        
+
         new Thread(() -> {
             loopThread.printLetter("A", 0);
         }, "A").start();
-        
+
         new Thread(() -> {
             loopThread.printLetter("C", 2);
         }, "C").start();
