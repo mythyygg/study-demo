@@ -5,29 +5,17 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BlockingQueue {
-
-    /** 存放元素的数组 */
     private final Object[] items;
 
-    /** 弹出元素的位置 */
     private int takeIndex;
 
-    /** 插入元素的位置 */
     private int putIndex;
 
-    /** 队列中的元素总数 */
     private AtomicInteger count = new AtomicInteger(0);
 
-    /** 插入锁 */
     private final ReentrantLock putLock = new ReentrantLock();
-
-    /** 队列未满的条件变量 */
     private final Condition notFull = putLock.newCondition();
-
-    /** 弹出锁 */
     private final ReentrantLock takeLock = new ReentrantLock();
-
-    /** 队列非空的条件变量 */
     private final Condition notEmpty = takeLock.newCondition();
 
     public BlockingQueue(int capacity) {
@@ -37,10 +25,7 @@ public class BlockingQueue {
     }
 
     private void enqueue(Object e) {
-        // 将对象e放入putIndex指向的位置
         items[putIndex] = e;
-
-        // putIndex向后移一位，如果已到末尾则返回队列开头(位置0)
         if (++putIndex == items.length)
             putIndex = 0;
     }
@@ -133,7 +118,6 @@ public class BlockingQueue {
     }
 
     private void signalNotFull() {
-        // 为了唤醒等待队列未满条件的线程，需要先获取对应的putLock
         putLock.lock();
         try {
             // 唤醒一个等待队列未满条件的线程
