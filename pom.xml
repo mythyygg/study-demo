@@ -33,9 +33,8 @@
     <module>rabbitmq</module>
     <module>rocketmq</module>
     <module>DesignPattern</module>
-    <module>jmh</module>
-    <module>zookeeper</module>
     <module>snippets</module>
+      <module>kafka</module>
   </modules>
 
   <dependencyManagement>

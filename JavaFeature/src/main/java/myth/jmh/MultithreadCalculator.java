@@ -1,4 +1,4 @@
-package myth;
+package myth.jmh;
 
 import java.util.ArrayList;
 import java.util.List;

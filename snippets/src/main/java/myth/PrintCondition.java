@@ -5,16 +5,30 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.Semaphore;
 
 public class PrintCondition {
-  private final int MAX = 100000;
+  private final int MAX = 100;
   private static int cur = 0;
   private static final ReentrantLock lock = new ReentrantLock();
   private static final Condition cond = lock.newCondition();
   private final Object monitor = new Object();
-
   private Semaphore semEven = new Semaphore(1);
   private Semaphore semOdd = new Semaphore(0);
+  public static void main(String[] args) {
+    PrintCondition p = new PrintCondition();
+    new Thread(() -> p.print1(1, "odd")).start();
+    new Thread(() -> p.print1(0, "even")).start();
+  }
 
-
+  public void print1(int mode, String name) {
+    for (int i = 0; i < MAX/2; ) {
+      lock.lock();
+      if (cur % 2 == mode) {
+        cur++;
+        i++;
+        System.out.println(name+" "+cur);
+      }
+      lock.unlock();
+    }
+  }
 
   void print4(int mode, String name) {
     for (int i = 0; i < MAX; i=i+1) {
@@ -59,16 +73,7 @@ public class PrintCondition {
     }
   }
 
-  public void print1(int mode, String name) {
-    while (cur <= MAX) {
-      lock.lock();
-      if (cur % 2 == mode && cur <= MAX) {
-        // System.out.println(name + ":" + cur);
-        cur++;
-      }
-      lock.unlock();
-    }
-  }
+
 
   public void print2(int mode, String name) {
     lock.lock();
@@ -103,13 +108,5 @@ public class PrintCondition {
       }
       monitor.notifyAll();
     }
-  }
-
-  public static void main(String[] args) {
-    PrintCondition p = new PrintCondition();
-    new Thread(() -> p.print1(1, "odd")).start();
-    new Thread(() -> p.print1(0, "even")).start();
-    // new Thread(() -> p.print2(1, "odd")).start();
-    // new Thread(() -> p.print2(0, "even")).start();
   }
 }

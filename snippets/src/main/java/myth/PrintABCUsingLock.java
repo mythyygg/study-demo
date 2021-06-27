@@ -1,5 +1,4 @@
 package myth;
-
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -26,14 +25,13 @@ public class PrintABCUsingLock {
 
     public static void main(String[] args) {
         PrintABCUsingLock loopThread = new PrintABCUsingLock(3);
+        new Thread(() -> {
+            loopThread.printLetter("A", 0);
+        }, "A").start();
 
         new Thread(() -> {
             loopThread.printLetter("B", 1);
         }, "B").start();
-
-        new Thread(() -> {
-            loopThread.printLetter("A", 0);
-        }, "A").start();
 
         new Thread(() -> {
             loopThread.printLetter("C", 2);

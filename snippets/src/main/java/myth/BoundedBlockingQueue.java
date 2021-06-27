@@ -21,9 +21,9 @@ public class BoundedBlockingQueue<E> {
         this.lock.lock();
         try {
             while (this.capacity == this.queue.size())
-                this.notFull.wait();
+                this.notFull.await();
             this.queue.add(obj);
-            this.notEmpty.notifyAll();
+            this.notEmpty.signal();
         } finally {
             this.lock.unlock();
         }
@@ -33,9 +33,9 @@ public class BoundedBlockingQueue<E> {
         this.lock.lock();
         try {
             while (this.queue.size() == 0)
-                this.notEmpty.wait();
+                this.notEmpty.await();
             E result = this.queue.poll();
-            notFull.notifyAll();
+            notFull.signal();
             return result;
         } finally {
             this.lock.unlock();

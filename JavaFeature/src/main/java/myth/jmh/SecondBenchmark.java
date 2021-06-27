@@ -1,4 +1,4 @@
-package myth;
+package myth.jmh;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;

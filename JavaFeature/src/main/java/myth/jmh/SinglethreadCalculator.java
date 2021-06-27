@@ -1,4 +1,4 @@
-package myth;
+package myth.jmh;
 
 public class SinglethreadCalculator implements Calculator {
 

@@ -3,8 +3,11 @@ import java.util.*;
 public class Arr {
 
     public static void main(String[] args) {
-        int[] a = new int[]{2,7,11,15};
-        System.out.println(twoSum2(a, 9));
+
+
+        int[] a = new int[]{1,2,3,0,0,0};
+        int[] b=  new int[]{2,5,6};
+        merge(a,3,b,3);
     }
 
     public static int[] twoSum(int[] nums, int target){
@@ -81,4 +84,42 @@ public class Arr {
         return res;
 
     }
+
+
+    public static void merge(int[] nums1, int j, int[] nums2, int k) {
+        int m = j-1;
+        int n = k-1;
+        for(int i = j+k-1; i >= 0; i--) {
+            if ( m >= 0 && n >= 0) {
+                if(nums1[m] > nums2[n]) {
+                    nums1[i] = nums1[m--];
+                }else {
+                    nums1[i] = nums2[n--];
+                }
+            } else if (m < 0) {
+                nums1[i] = nums2[n--];
+            } else if (n < 0){
+                nums1[i] = nums1[m--];
+            }
+        }
+    }
+
+    public static int[] countN(int[] a) {
+        for(int i = 0; i < a.length; i++) {
+            while(a[i] > 0 ) {
+                int index = a[i];
+                if (a[index-1] > 0) {
+                    a[i] = a[index-1];
+                    a[index-1] = -1;
+                } else {
+                    a[index-1] -= 1;
+                    a[i] = 0;
+                }
+            }
+        }
+        return a;
+
+    }
 }
+
+
