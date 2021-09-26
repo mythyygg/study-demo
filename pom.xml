@@ -27,14 +27,14 @@
 
   <modules>
     <module>spring</module>
-    <module>springboot</module>
     <module>JavaFeature</module>
     <module>distributed-system</module>
-    <module>rabbitmq</module>
     <module>rocketmq</module>
     <module>DesignPattern</module>
+    <module>leetcode</module>
     <module>snippets</module>
-      <module>kafka</module>
+    <module>kafka</module>
+    <module>netty</module>
   </modules>
 
   <dependencyManagement>
@@ -80,6 +80,10 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
 
   </dependencies>

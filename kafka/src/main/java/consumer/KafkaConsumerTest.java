@@ -1,5 +1,6 @@
 package consumer;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-
 
 /**
  * 
@@ -43,7 +43,7 @@ public class KafkaConsumerTest implements Runnable {
 		List<Long> list2=new ArrayList<Long>();
 		try {
 			for (;;) {
-					msgList = consumer.poll(100);
+					msgList = consumer.poll(Duration.ofMillis(100));
 					if(null!=msgList&&msgList.count()>0){
 					for (ConsumerRecord<String, String> record : msgList) {
 						if(messageNo%10==0){
@@ -54,7 +54,6 @@ public class KafkaConsumerTest implements Runnable {
 						messageNo++;
 					}
 					if(list.size()==50){
-						// 手动提交
 						consumer.commitSync();
 						System.out.println("成功提交"+list.size()+"条,此时的offset为:"+list2.get(49));
 					}else if(list.size()>50){
@@ -86,6 +85,7 @@ public class KafkaConsumerTest implements Runnable {
 		props.put("session.timeout.ms", "30000");
 		//一次最大拉取的条数
 		props.put("max.poll.records", 10);
+
 //		earliest当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费 
 //		latest 
 //		当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据 

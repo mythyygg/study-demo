@@ -1,96 +1,38 @@
 package myth;
 
-import com.google.common.collect.Lists;
+
 import org.springframework.util.StopWatch;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class performance {
 
-  static void forTest() {
-    StopWatch stopWatch = new StopWatch("test");
-    Random seed = new Random();
+  public static void main(String[] args) throws FileNotFoundException {
+    try {
+      File kf = new File("kf");
+      boolean exists = kf.exists();
 
-    List<Integer> ints = Stream.generate(seed::nextInt).limit(500000).collect(Collectors.toList());
-    int m = Integer.MIN_VALUE;
-    int e = ints.size();
-    Integer[] a = ints.toArray(new Integer[ints.size()]);
-    stopWatch.start("foreach");
-    for (int i = 0; i < e; i++) {
-      if (a[i] > m) {
-        m = a[i];
+      byte bWrite[] = { 11, 21, 3, 40, 5 };
+      OutputStream os = new FileOutputStream("test.txt");
+
+      for (int x = 0; x < bWrite.length; x++) {
+        os.write(bWrite[x]); // writes the bytes
       }
-    }
-    stopWatch.stop();
-    stopWatch.start("foreach1");
-    for (int i = 0; i < e; i++) {
-      if (a[i] > m) {
-        m = a[i];
+      os.close();
+
+      InputStream is = new FileInputStream("test.txt");
+
+      int size = is.available();
+
+      for (int i = 0; i < size; i++) {
+        System.out.print((char) is.read() + "  ");
       }
+      is.close();
+    } catch (IOException e) {
+      System.out.print("Exception");
     }
-    stopWatch.stop();
-    System.out.println(stopWatch.prettyPrint());
-    System.out.println(stopWatch.toString());
-  }
-
-  static double fibImpl(int n) {
-    if (n < 0) {
-      throw new IllegalArgumentException("n must be > 0");
-    }
-    if (n == 0) {
-      return 0d;
-    }
-    if (n == 1) {
-      return 1d;
-    }
-    double d = fibImpl(n - 2) + fibImpl(n - 1);
-    if (Double.isInfinite(d)) {
-      throw new ArithmeticException("overflow");
-    }
-    return d;
-  }
-
-  static void forTest1() {
-    Random seed = new Random();
-    int N = 1000000;
-    long sum = 0;
-    StopWatch stopWatch = new StopWatch("test");
-
-    stopWatch.start("foreach");
-    for (int i = 0; i < N; i++) {
-      if (5 > 3) {
-        new ArrayList<>(1);
-      }
-    }
-    stopWatch.stop();
-    stopWatch.start("foreach1");
-    sum = 0;
-    if (5 > 3) {
-      for (int i = 0; i < N; i++) {
-        new ArrayList<>(1);
-      }
-    }
-    stopWatch.stop();
-    System.out.println(stopWatch.prettyPrint());
-    System.out.println(stopWatch.toString());
-  }
-
-  static void doTest() {
-    double l;
-    long time = System.currentTimeMillis();
-    for (int i = 1; i < 50; i++) {
-      l = fibImpl(35);
-    }
-
-    long now = System.currentTimeMillis();
-    System.out.println(now - time);
-    //System.out.println(l);
-  }
-
-  public static void main(String[] args) {
-    //forTest();
-    forTest1();
   }
 }

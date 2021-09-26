@@ -35,7 +35,7 @@ public class KafkaProducerTest implements Runnable {
 		props.put("batch.size", 16384);
 		props.put("key.serializer", StringSerializer.class.getName());
 		props.put("value.serializer", StringSerializer.class.getName());
-		this.producer = new KafkaProducer<String, String>(props);
+		this.producer = new KafkaProducer<>(props);
 		this.topic = topicName;
 	}
 
@@ -44,19 +44,18 @@ public class KafkaProducerTest implements Runnable {
 		int messageNo = 1;
 		try {
 			for(;;) {
-				String messageStr="你好，这是第"+messageNo+"条数据";
+
+				String messageStr="你好，这是第"+messageNo+"条数据."+
+						"BUG org.apache.kafka.cod sensor with name node-0.bytes0 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes0 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes0 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes0 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes0 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes0 [kafka-producer-network-thread | producer-1] DEBUG org.apache.kafka.common.metrics.Metrics - Removed sensor with name node-0.bytes";
 				producer.send(new ProducerRecord<String, String>(topic, "Message", messageStr));
-				//生产了10条就打印
 				if(messageNo%10==0){
 					System.out.println("发送的信息:" + messageStr);
 				}
-				//生产100条就退出
 				if(messageNo%100==0){
 					System.out.println("成功发送了"+messageNo+"条");
 					break;
 				}
 				messageNo++;
-//				Utils.sleep(1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,12 +63,10 @@ public class KafkaProducerTest implements Runnable {
 			producer.close();
 		}
 	}
-	
+
 	public static void main(String args[]) {
 		KafkaProducerTest test = new KafkaProducerTest("test");
 		Thread thread = new Thread(test);
 		thread.start();
 	}
-	
-
 }
